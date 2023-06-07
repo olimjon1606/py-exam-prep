@@ -4,7 +4,6 @@ r = robjects.r
 
 import agemodel
 
-
 def GetAgeWeightFirst(table):
     """Get sequences of mother's age, birth weight, and first baby flag.
 

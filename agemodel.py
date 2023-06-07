@@ -1,80 +1,3 @@
-"""This file contains code used in "Think Stats",
-by Allen B. Downey, available from greenteapress.com
-
-Copyright 2010 Allen B. Downey
-License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
-"""
-
-import math
-import matplotlib
-import matplotlib.pyplot as pyplot
-
-import correlation
-import cumulative
-import descriptive
-import first
-import myplot
-import survey
-import thinkstats
-
-import Cdf
-import Pmf
-
-"""
-* Results:
-
-First babies, ages, trimmed mean: 23.0784947977
-Other babies, ages, trimmed mean: 26.6647683689
-Difference in means: 3.5862735712
-
-First babies, weights, trimmed mean: 115.558686539
-Other babies, weights, trimmed mean: 117.734924078
-Difference in means: 2.17623753873
-
-
-* First babies are 2.2 oz lighter; their mothers are 3.5 years younger.
-
-
-Pearson correlation 0.0683745752519
-Spearman correlation 0.0987971917949
-(inter, slope): 109.522876323 0.287729420217
-R^2 0.00467508254087
-
-* The units of inter are ounces; the units of slope are ounces per year.
-* Each additional year adds 0.3 ounces to the mean birth weight.
-
-* But the correlation is quite weak.
-
-Weight difference explained by age: 1.03187641538
-Fraction explained: 0.474156151163
-
-* The age difference could account for 50% of the weight difference.
-
-* If we bin births by mother's age, we see that the relationship is nonlinear,
-* so the estimated slope is probably too low, which means that the fraction
-* of the weight difference explained by age is probably more than 50%.
-
-Bin Mean weight (oz)
-10.0 117.295081967
-15.0 113.487096774
-20.0 116.505546218
-25.0 118.190963342
-30.0 118.323802716
-35.0 118.743842365
-40.0 114.054054054
-
-* If we trim very low and very high weights, the correlations are a
-* little higher, but the difference is small enough that it is a non-issue.
-
-Pearson correlation 0.084795033619
-Spearman correlation 0.103080620319
-(inter, slope): 110.400666041 0.297751296651
-R^2 0.00719019772646
-
-
-"""
-
-
 def Process(table, name):
     """Runs various analyses on this table.
 
@@ -105,7 +28,7 @@ def MakeTables(data_dir='.'):
     Process(pool, 'live births')
     Process(firsts, 'first babies')
     Process(others, 'others')
-        
+
     return pool, firsts, others
 
 
@@ -126,7 +49,7 @@ def GetAgeWeight(table, low=0.0, high=20.0):
         if r.agepreg == 'NA' or r.totalwgt_oz == 'NA':
             continue
 
-        if r.totalwgt_oz < low*16 or r.totalwgt_oz > high*16:
+        if r.totalwgt_oz < low * 16 or r.totalwgt_oz > high * 16:
             continue
 
         ages.append(r.agepreg)
@@ -142,7 +65,7 @@ def Partition(ages, weights, bin_size=2):
     """
     weight_dict = {}
     for age, weight in zip(ages, weights):
-        bin = bin_size * math.floor(age / bin_size) + bin_size/2.0
+        bin = bin_size * math.floor(age / bin_size) + bin_size / 2.0
         weight_dict.setdefault(bin, []).append(weight)
 
     for bin, bin_weights in weight_dict.iteritems():
@@ -193,7 +116,7 @@ def MakeFigures(pool, firsts, others):
     # make a scatterplot of ages and weights
     ages, weights = GetAgeWeight(pool)
     pyplot.clf()
-    #pyplot.scatter(ages, weights, alpha=0.2)
+    # pyplot.scatter(ages, weights, alpha=0.2)
     pyplot.hexbin(ages, weights, cmap=matplotlib.cm.gray_r)
     myplot.Save(root='agemodel_scatter',
                 xlabel='Age (years)',
@@ -207,13 +130,16 @@ def DifferenceInMeans(firsts, others, attr):
     Prints summary statistics.
     """
     firsts_mean = thinkstats.Mean(getattr(firsts, attr))
-    print 'First babies, %s, trimmed mean:' % attr, firsts_mean
+    print
+    'First babies, %s, trimmed mean:' % attr, firsts_mean
 
     others_mean = thinkstats.Mean(getattr(others, attr))
-    print 'Other babies, %s, trimmed mean:' % attr, others_mean
+    print
+    'Other babies, %s, trimmed mean:' % attr, others_mean
 
     diff = others_mean - firsts_mean
-    print 'Difference in means:', diff
+    print
+    'Difference in means:', diff
     print
 
     return diff
@@ -225,17 +151,21 @@ def ComputeLeastSquares(ages, weights):
     Prints summary statistics.
     """
     # compute the correlation between age and weight
-    print 'Pearson correlation', correlation.Corr(ages, weights)
-    print 'Spearman correlation', correlation.SpearmanCorr(ages, weights)
+    print
+    'Pearson correlation', correlation.Corr(ages, weights)
+    print
+    'Spearman correlation', correlation.SpearmanCorr(ages, weights)
 
     # compute least squares fit
     inter, slope = correlation.LeastSquares(ages, weights)
-    print '(inter, slope):', inter, slope
+    print
+    '(inter, slope):', inter, slope
 
     res = correlation.Residuals(ages, weights, inter, slope)
     R2 = correlation.CoefDetermination(weights, res)
 
-    print 'R^2', R2
+    print
+    'R^2', R2
     print
     return inter, slope, R2
 
@@ -244,8 +174,10 @@ def main(name, data_dir=''):
     pool, firsts, others = MakeTables(data_dir)
 
     for table in [pool, firsts, others]:
-        print table.name, len(table.records),
-        print len(table.ages), len(table.weights)
+        print
+        table.name, len(table.records),
+        print
+        len(table.ages), len(table.weights)
 
     # compute differences in mean age and weight
     age_diff = DifferenceInMeans(firsts, others, 'ages')
@@ -259,8 +191,10 @@ def main(name, data_dir=''):
 
     # see how much of the weight difference is explained by age
     weight_diff_explained = age_diff * slope
-    print 'Weight difference explained by age:', weight_diff_explained
-    print 'Fraction explained:', weight_diff_explained / weight_diff
+    print
+    'Weight difference explained by age:', weight_diff_explained
+    print
+    'Fraction explained:', weight_diff_explained / weight_diff
     print
 
     # make a table of mean weight for 5-year age bins
@@ -287,6 +221,8 @@ def MakeLinePlot(age_bins):
                 ylabel='Mean birthweight (oz)',
                 legend=False)
 
+
 if __name__ == '__main__':
     import sys
+
     main(*sys.argv)

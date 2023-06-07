@@ -1,12 +1,3 @@
-"""This file contains code for use with "Think Stats",
-by Allen B. Downey, available from greenteapress.com
-
-Copyright 2008 Allen B. Downey.
-Distributed under the GNU General Public License at gnu.org/licenses/gpl.html.
-"""
-
-"""Functions for building CDFs (cumulative distribution functions)."""
-
 import bisect
 import math
 import random
@@ -21,6 +12,7 @@ class Cdf(object):
         ps: sequence of probabilities
         name: string used as a graph label.
     """
+
     def __init__(self, xs=None, ps=None, name=''):
         self.xs = [] if xs is None else xs
         self.ps = [] if ps is None else ps
@@ -59,7 +51,7 @@ class Cdf(object):
         """
         if x < self.xs[0]: return 0.0
         index = bisect.bisect(self.xs, x)
-        p = self.ps[index-1]
+        p = self.ps[index - 1]
         return p
 
     def Value(self, p):
@@ -77,8 +69,8 @@ class Cdf(object):
         if p == 0: return self.xs[0]
         if p == 1: return self.xs[-1]
         index = bisect.bisect(self.ps, p)
-        if p == self.ps[index-1]:
-            return self.xs[index-1]
+        if p == self.ps[index - 1]:
+            return self.xs[index - 1]
         else:
             return self.xs[index]
 
@@ -96,7 +88,7 @@ class Cdf(object):
     def Random(self):
         """Chooses a random value from this distribution."""
         return self.Value(random.random())
-    
+
     def Sample(self, n):
         """Generates a random sample from this distribution.
         
@@ -145,7 +137,7 @@ class Cdf(object):
             ps.append(p)
 
             try:
-                xs.append(self.xs[i+1])
+                xs.append(self.xs[i + 1])
                 ps.append(p)
             except IndexError:
                 pass
@@ -172,7 +164,7 @@ def MakeCdfFromItems(items, name=''):
         cs.append(runsum)
 
     total = float(runsum)
-    ps = [c/total for c in cs]
+    ps = [c / total for c in cs]
 
     cdf = Cdf(xs, ps, name)
     return cdf
@@ -231,5 +223,3 @@ def MakeCdfFromList(seq, name=''):
     """
     hist = Pmf.MakeHistFromList(seq)
     return MakeCdfFromHist(hist, name)
-
-

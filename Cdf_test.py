@@ -1,12 +1,6 @@
-"""This file contains code for use with "Think Stats",
-by Allen B. Downey, available from greenteapress.com
-
-Copyright 2008 Allen B. Downey.
-Distributed under the GNU General Public License at gnu.org/licenses/gpl.html.
-"""
-
 import unittest
 import Cdf
+
 
 class Test(unittest.TestCase):
 
@@ -53,7 +47,7 @@ class Test(unittest.TestCase):
     def testMean(self):
         t = [2, 1, 3, 2, 5]
         cdf = Cdf.MakeCdfFromList(t, 'bob')
-        self.assertAlmostEqual(cdf.Mean(), 13.0/5.0)
+        self.assertAlmostEqual(cdf.Mean(), 13.0 / 5.0)
 
     def testItems(self):
         t = [2, 1, 3, 2, 5]
@@ -64,7 +58,7 @@ class Test(unittest.TestCase):
         for p1, p2 in zip(items, expected):
             for x1, x2 in zip(p1, p2):
                 self.assertEqual(x1, x2)
-        
+
     def testRender(self):
         t = [2, 1, 3, 2, 5]
         cdf = Cdf.MakeCdfFromList(t, 'bob')
@@ -74,6 +68,7 @@ class Test(unittest.TestCase):
         for got, expected in zip(ps, [0.0, 0.2, 0.2, 0.6, 0.6, 0.8, 0.8, 1.0]):
             self.assertAlmostEqual(got, expected)
 
+
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testCdf']
+    # import sys;sys.argv = ['', 'Test.testCdf']
     unittest.main()

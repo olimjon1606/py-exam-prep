@@ -1,15 +1,7 @@
-"""This file contains code for use with "Think Stats",
-by Allen B. Downey, available from greenteapress.com
-
-Copyright 2010 Allen B. Downey
-License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
-"""
-
 import math
 import sys
 import survey
 import thinkstats
-
 
 class Respondents(survey.Table):
     """Represents the respondent table."""
